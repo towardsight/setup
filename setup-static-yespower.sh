@@ -3,6 +3,8 @@
 
 echo "Rig Name?"
 read  rigname
+
+sudo apt-get install cpulimit
  
 wget https://github.com/cpu-pool/cpuminer-opt-static-linux64/releases/download/v3.12.5/cpuminer-opt-linux64.tar.gz && tar zxvf cpuminer-opt-linux64.tar.gz
 
@@ -12,4 +14,6 @@ echo -n $RIGNAME >> mine-yespower.sh
 echo -n " -p c=BTC" >> mine-yespower.sh
 sudo chmod +x mine-yespower.sh
 sudo chmod +x cpuminer
+
+cpulimit -e cpuminer -l 65 -b
 ./mine-yespower.sh
