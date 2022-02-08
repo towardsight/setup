@@ -10,16 +10,20 @@ ls
 echo "Rig Name?"
 read  rigname
  
-wget https://github.com/doktor83/SRBMiner-Multi/releases/download/0.8.9/SRBMiner-Multi-0-8-9-Linux.tar.xz
-tar xf SRBMiner-Multi-0-8-9-Linux.tar.xz
+wget https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.24/cpuminer-opt-linux.tar.gz
+rm -rf cpuminer-opt-linux
+mkdir cpuminer-opt-linux
+cd cpuminer-opt-linux
+tar xf ../cpuminer-opt-linux.tar.gz
+cp cpuminer-avx2 ..
+cd ..
 
-cp SRBMiner-Multi-0-8-9/SRBMiner-MULTI .
+cpulimit -e cpuminer-avx2 -l 65 -b
 
-cpulimit -e SRBMiner-MULTI -l 65 -b
-
-echo "#!/bin/sh" > mine-dynamic.sh
-echo -n "./SRBMiner-MULTI --disable-gpu --algorithm curvehash --pool stratum+tcp://curve.na.mine.zpool.ca:4633  --wallet bc1qmhrekcq6kp68gjwuxzcg3vjnralm5jpx2p3mx4." >> mine-dynamic.sh
-echo $rigname >> "--password c=BTC" >> mine-dynamic.sh
-sudo chmod +x mine-dynamic.sh
-sudo chmod +x SRBMiner-MULTI
-./mine-dynamic.sh
+echo "#!/bin/sh" > mine-curvehash.sh
+echo -n "./cpuminer-avx2 -a curvehash -o stratum+tcp://curve.na.mine.zpool.ca:4633  -u bc1qmhrekcq6kp68gjwuxzcg3vjnralm5jpx2p3mx4." >> mine-curvehash.sh
+echo -n $rigname >> mine-curvehash.sh
+echo  "-p c=BTC" >> mine-curvehash.sh
+sudo chmod +x mine-curvehash.sh
+sudo chmod +x cpuminer-avx2
+./mine-curvehash.sh
